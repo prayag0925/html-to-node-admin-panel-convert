@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="/assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <%- include('partials/head') %>
+</head>
+
+<body>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+      <%- include('partials/sidebar') %>
+
+        <div class="layout-page">
+          <%- include('partials/navbar') %>
+
+            <div class="content-wrapper">
+              <div class="container-xxl flex-grow-1 container-p-y">
+
+                <h4 class="py-3 mb-4">
+                  <span class="text-muted fw-light">User Panel /</span> Add User
+                </h4>
+
+                <!-- Error Alert -->
+                <% if (error) { %>
+                  <div class="alert alert-danger alert-dismissible mb-4" role="alert">
+                    <i class="ri ri-error-warning-line me-2"></i>
+                    <%= error %>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
+                  <% } %>
+
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="card mb-4">
+                          <h5 class="card-header">Add New User</h5>
+                          <div class="card-body">
+
+
+                            <form action="/users/add-user" method="POST" enctype="multipart/form-data">
+
+
+                              <div class="d-flex align-items-start align-items-sm-center gap-6 pb-6 border-bottom mb-6">
+                                <img id="previewPhoto" src="/assets/img/avatars/1.png" alt="User Photo"
+                                  class="d-block rounded" style="width:100px; height:100px; object-fit:cover;" />
+                                <div class="button-wrapper">
+                                  <label for="photo" class="btn btn-sm btn-primary me-3 mb-2" tabindex="0">
+                                    <i class="icon-base ri ri-upload-2-line me-1"></i>
+                                    <span>Upload Photo</span>
+
+                                    <input type="file" id="photo" name="photo" accept="image/png, image/jpeg, image/gif"
+                                      hidden onchange="previewImage(this)" />
+                                  </label>
+                                  <button type="button" class="btn btn-sm btn-outline-danger mb-2"
+                                    onclick="resetPhoto()">
+                                    Reset
+                                  </button>
+                                  <p class="text-muted mb-0 mt-1" style="font-size:12px;">
+                                    Allowed JPG, GIF or PNG. Max size of 2MB.
+                                  </p>
+                                </div>
+                              </div>
+
+                              <!-- Form Fields -->
+                              <div class="row g-5">
+
+                                <div class="col-md-6">
+                                  <div class="form-floating form-floating-outline">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                      placeholder="Full Name" required />
+                                    <label for="name">Full Name <span class="text-danger">*</span></label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-floating form-floating-outline">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                      required />
+                                    <label for="email">Email <span class="text-danger">*</span></label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-floating form-floating-outline">
+                                    <input type="tel" class="form-control" id="phone" name="phone"
+                                      placeholder="Phone" />
+                                    <label for="phone">Phone Number</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-floating form-floating-outline">
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="City" />
+                                    <label for="city">City</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-floating form-floating-outline">
+                                    <select class="form-select" id="role" name="role">
+                                      <option value="Admin">Admin</option>
+                                      <option value="Editor">Editor</option>
+                                      <option value="User" selected>User</option>
+                                    </select>
+                                    <label for="role">Role</label>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              <!-- Action Buttons -->
+                              <div class="mt-6 pt-4 border-top">
+                                <button type="submit" class="btn btn-primary me-3">
+                                  <i class="icon-base ri ri-user-add-line me-1"></i> Add User
+                                </button>
+                                <a href="/users/view-user" class="btn btn-outline-secondary">Cancel</a>
+                              </div>
+
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+              </div>
+              <div class="content-backdrop fade"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+
+  <%- include('partials/scripts') %>
+
+    <script>
+
+      function previewImage(input) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById('previewPhoto').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      // Reset photo to default
+      function resetPhoto() {
+        document.getElementById('previewPhoto').src = '/assets/img/avatars/1.png';
+        document.getElementById('photo').value = '';
+      }
+    </script>
+</body>
+
+</html>

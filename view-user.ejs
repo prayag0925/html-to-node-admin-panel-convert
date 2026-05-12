@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" class="layout-menu-fixed layout-compact" data-assets-path="/assets/" data-template="vertical-menu-template-free">
+<head>
+  <%- include('partials/head') %>
+</head>
+
+<body>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+
+      <%- include('partials/sidebar') %>
+
+      <div class="layout-page">
+        <%- include('partials/navbar') %>
+
+        <div class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
+
+            <h4 class="py-3 mb-4">
+              <span class="text-muted fw-light">User Panel /</span> View Users
+            </h4>
+
+            <!-- Success Message -->
+            <% if (success) { %>
+              <div class="alert alert-success alert-dismissible mb-4" role="alert">
+                <i class="ri ri-check-double-line me-2"></i> <%= success %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            <% } %>
+
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">All Users</h5>
+                <a href="/users/add-user" class="btn btn-primary btn-sm">
+                  <i class="ri ri-user-add-line me-1"></i> Add New User
+                </a>
+              </div>
+
+              <div class="table-responsive text-nowrap">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Avatar</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Role</th>
+                      <th>City</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
+
+                    <% if (users.length === 0) { %>
+                      <tr>
+                        <td colspan="7" class="text-center text-muted py-5">
+                          <i class="ri ri-user-search-line" style="font-size:2rem;"></i>
+                          <p class="mt-2 mb-0">Koi user nathi. <a href="/users/add-user">Add User</a> karo.</p>
+                        </td>
+                      </tr>
+                    <% } else { %>
+                      <% users.forEach(function(user) { %>
+                      <tr>
+
+                        <!-- Avatar -->
+                        <td>
+                          <div class="avatar">
+                            <img
+                              src="<%= user.photo ? user.photo : '/assets/img/avatars/1.png' %>"
+                              alt="<%= user.name %>"
+                              class="rounded-circle"
+                              style="width:38px; height:38px; object-fit:cover;" />
+                          </div>
+                        </td>
+
+                        <!-- Name -->
+                        <td><strong><%= user.name %></strong></td>
+
+                        <!-- Email -->
+                        <td><%= user.email %></td>
+
+                        <!-- Phone -->
+                        <td><%= user.phone || '-' %></td>
+
+                        <!-- Role Badge -->
+                        <td>
+                          <% if (user.role === 'Admin') { %>
+                            <span class="badge rounded-pill bg-label-primary"><%= user.role %></span>
+                          <% } else if (user.role === 'Editor') { %>
+                            <span class="badge rounded-pill bg-label-warning"><%= user.role %></span>
+                          <% } else { %>
+                            <span class="badge rounded-pill bg-label-info"><%= user.role %></span>
+                          <% } %>
+                        </td>
+
+                        <!-- City -->
+                        <td><%= user.city || 'Unknown' %></td>
+
+                        <!-- Actions -->
+                        <td>
+                          <div class="dropdown">
+                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none" data-bs-toggle="dropdown">
+                              <i class="icon-base ri ri-more-2-line icon-18px"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="/users/delete/<%= user.id %>"
+                                onclick="return confirm('Aa user ne delete karvu che?')">
+                                <i class="icon-base ri ri-delete-bin-6-line icon-18px me-2 text-danger"></i>
+                                Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+
+                      </tr>
+                      <% }); %>
+                    <% } %>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+          <div class="content-backdrop fade"></div>
+        </div>
+      </div>
+    </div>
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+
+  <%- include('partials/scripts') %>
+</body>
+</html>
